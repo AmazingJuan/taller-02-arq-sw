@@ -1,19 +1,46 @@
-FROM node:22
+# -------------------------------------------------
+# Imagen base con Node.js
+# -------------------------------------------------
+FROM node:22-alpine
 
-# Create app directory
+# -------------------------------------------------
+# Variables de entorno
+# -------------------------------------------------
+ARG PORT=3000
+ENV PORT=${PORT}
+ENV NODE_ENV=production
+
+# -------------------------------------------------
+# Crear directorio de la app
+# -------------------------------------------------
 WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+# -------------------------------------------------
+# Copiar package.json y package-lock.json
+# -------------------------------------------------
 COPY package*.json ./
 
-RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
+# -------------------------------------------------
+# Instalar dependencias
+# -------------------------------------------------
+RUN npm install --production
 
-# Bundle app source
+# -------------------------------------------------
+# Copiar el código fuente
+# -------------------------------------------------
 COPY . .
 
-EXPOSE 8080
-CMD [ "node", "index.js" ]
+# -------------------------------------------------
+# Compilar TypeScript
+# -------------------------------------------------
+RUN npm run build
+
+# -------------------------------------------------
+# Exponer el puerto que usa la app
+# -------------------------------------------------
+EXPOSE ${PORT}
+
+# -------------------------------------------------
+# Comando para ejecutar la app
+# -------------------------------------------------
+CMD ["node", "dist/index.js"]
