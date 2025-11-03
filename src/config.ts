@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
+const os = require("os")
 
 interface Config {
   bucketUrl: string;
@@ -10,5 +11,5 @@ interface Config {
 export const config: Config = {
   bucketUrl: process.env.GCP_BUCKET_URL ?? '',
   port: Number(process.env.PORT) || 3000,
-  containerId: process.env.CONTAINER_ID || "unknown",
+  containerId: os.hostname() || "unknown",
 };
