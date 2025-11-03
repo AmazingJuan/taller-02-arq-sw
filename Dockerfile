@@ -40,4 +40,4 @@ ENV NODE_ENV=production
 EXPOSE ${PORT}
 
 # Ejecutar la app
-CMD ["node", "dist/index.js"]
+CMD ["node", "dist/app.js"]
